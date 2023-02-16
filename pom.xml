@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.sf.sockettest</groupId>
+    <artifactId>SocketTest</artifactId>
+    <packaging>jar</packaging>
+    <version>3.0</version>
+    <name>SocketTest</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins><!-- 打包 设置 MANIFEST.MF 文件中 Class-Path: 依赖-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifest><!-- 添加依赖包路径, 路径会写在MANIFEST文件的Class-Path下 -->
+                            <addClasspath>true</addClasspath><!-- 添加依赖前缀 -->
+                            <classpathPrefix>lib/</classpathPrefix><!-- 设置启动函数 -->
+                            <mainClass>net.sf.sockettest.SocketTest</mainClass>
+                        </manifest>
+                        <manifestEntries><!-- 自定义 MANIFEST.MC文件中其他属性 -->
+                            <Class-Path>metouia.jar</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin><!--将依赖输出到 target/lib 目录下-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals><!-- 依赖输出target/lib目录 -->
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
